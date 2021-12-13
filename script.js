@@ -1,13 +1,19 @@
 let city = async()=>{
   let input = document.getElementById("search-bar").value;
   document.getElementById("search-bar").value="";
-  try{
-    let fetchdata = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&lang=en&units=metric&appid=78ea530bcb66434fe3d2276971510974`);
-    let convert = await fetchdata.json();
-    show(convert);
-  }catch{
-      
+  if(input!==""){
+    try{
+      let fetchdata = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&lang=en&units=metric&appid=78ea530bcb66434fe3d2276971510974`);
+      let convert = await fetchdata.json();
+      show(convert);
+    }catch{
+      document.getElementById("display-img").innerHTML="City Not Found"
+    }
+  }else{
+    document.getElementById("display-img").hidden=false;
+    document.getElementById("display-img").innerHTML="Enter City Name";
   }
+  
 }
 
 function show({weather,main,wind,sys,name}){
@@ -33,3 +39,10 @@ function show({weather,main,wind,sys,name}){
   </div> 
   </div>`;
 } 
+
+document.getElementById('search-bar').addEventListener("keyup",function(event){
+  
+  if(event.key=="Enter"){
+    city();
+  }
+});
